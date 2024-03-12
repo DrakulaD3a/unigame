@@ -1,7 +1,12 @@
 #pragma once
 
-#include <stdbool.h>
 #include <SDL2/SDL.h>
+#include <stdbool.h>
+
+typedef struct {
+    double x;
+    double y;
+} Coords;
 
 bool InitSDL();
 
@@ -9,7 +14,7 @@ void DeinitSDL();
 
 bool CreateWindow(const char *title, int width, int height);
 
-void StartLoop(void (*update)(float), void (*render)(float));
+void StartLoop(void (*update)(float), void (*render)(float, SDL_Renderer *));
 
 void ExitGame();
 
