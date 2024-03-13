@@ -1,6 +1,9 @@
 #include "engine/engine.h"
+#include "entities/enemy.h"
 #include "entities/player.h"
 #include <stdbool.h>
+#include <stdlib.h>
+#include <time.h>
 
 #define SCREEN_WIDTH 640
 #define SCREEN_HEIGHT 480
@@ -15,6 +18,8 @@ Player player = {
     .hp = 100,
     .speed = 5.0,
 };
+Enemy *enemies = NULL;
+int enemiesCount = 0;
 
 int main() {
     if (!InitSDL()) {
@@ -24,6 +29,8 @@ int main() {
     if (!CreateWindow("Unigame", SCREEN_WIDTH, SCREEN_HEIGHT)) {
         return 1;
     }
+
+    srand(time(NULL));
 
     StartLoop(update, render);
 
