@@ -7,7 +7,6 @@ typedef struct {
     Coords coords;
     int hp;
     float speed;
-
 } Player;
 
 // dir: w - up, s - down, a - left, d - right

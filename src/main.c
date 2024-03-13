@@ -16,7 +16,6 @@ Player player = {
 };
 
 int main() {
-
     if (!InitSDL()) {
         return 1;
     }
