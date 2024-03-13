@@ -12,6 +12,19 @@ static const Uint8 *keyStates = NULL;
 static Uint8 lastKeyStates[SDL_NUM_SCANCODES];
 static bool isRunning = true;
 
+SDL_FPoint CoordsToSDL(Coords coords, Coords screen) {
+    // TODO: Bounds checking
+    SDL_FPoint result;
+    result.x = coords.x - screen.x;
+    result.y = coords.y - screen.y;
+    return result;
+}
+
+void SetCoordsToSDL(Coords coords, Coords screen, SDL_FRect *shell) {
+    shell->x = (int)CoordsToSDL(coords, screen).x;
+    shell->y = (int)CoordsToSDL(coords, screen).y;
+}
+
 bool InitSDL() {
     if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0) {
         fprintf(stderr, "SDL_Init failed: %s\n", SDL_GetError());
