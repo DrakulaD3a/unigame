@@ -1,5 +1,5 @@
-#include "engine.h"
-#include "player.h"
+#include "engine/engine.h"
+#include "entities/player.h"
 #include <stdbool.h>
 
 #define SCREEN_WIDTH 640
@@ -8,7 +8,7 @@
 void update(float dt);
 void render(float dt, SDL_Renderer *renderer);
 
-Coords screen = {0.0, 0.0};
+Screen screen = {0.0, 0.0};
 Player player = {
     .shell = {50, 50, 20, 20},
     .coords = {50.0, 50.0},

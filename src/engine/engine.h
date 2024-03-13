@@ -8,9 +8,11 @@ typedef struct {
     double y;
 } Coords;
 
-SDL_FPoint CoordsToSDL(Coords coords, Coords screen);
+typedef Coords Screen;
 
-void SetCoordsToSDL(Coords coords, Coords screen, SDL_FRect *shell);
+SDL_FPoint CoordsToSDL(Coords coords, Screen screen);
+
+void SetCoordsToSDL(Coords coords, Screen screen, SDL_FRect *shell);
 
 // ==============================================================================
 
