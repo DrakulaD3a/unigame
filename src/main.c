@@ -1,6 +1,6 @@
-#include "engine/engine.h"
-#include "entities/enemy.h"
-#include "entities/player.h"
+#include "engine.h"
+#include "enemy.h"
+#include "player.h"
 #include <stdbool.h>
 #include <stdlib.h>
 #include <time.h>
@@ -8,7 +8,7 @@
 #define SCREEN_WIDTH 640
 #define SCREEN_HEIGHT 480
 
-void update(float dt);
+void update(float dt, SDL_Window *window);
 void render(float dt, SDL_Renderer *renderer);
 
 Screen screen = {0.0, 0.0};
@@ -39,7 +39,7 @@ int main() {
     return 0;
 }
 
-void update(float dt) {
+void update(float dt, SDL_Window *window) {
     if (IsKeyDown(SDL_SCANCODE_W)) {
         playerMove(&player, 'w');
         SetCoordsToSDL(player.coords, screen, &player.shell);

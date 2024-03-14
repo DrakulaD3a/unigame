@@ -22,7 +22,7 @@ void DeinitSDL();
 
 bool CreateWindow(const char *title, int width, int height);
 
-void StartLoop(void (*update)(float), void (*render)(float, SDL_Renderer *));
+void StartLoop(void (*update)(float, SDL_Window *), void (*render)(float, SDL_Renderer *));
 
 void ExitGame();
 
