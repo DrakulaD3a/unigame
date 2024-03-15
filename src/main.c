@@ -1,12 +1,16 @@
 #include "engine/engine.h"
 #include "entities/enemy.h"
 #include "entities/player.h"
+#include "timer.h"
 #include <stdbool.h>
 #include <stdlib.h>
 #include <time.h>
 
 #define SCREEN_WIDTH 640
 #define SCREEN_HEIGHT 480
+
+// TODO: Make this depend on time
+#define MAX_ENEMIES 10
 
 void update(float dt, SDL_Window *window);
 void render(float dt, SDL_Renderer *renderer);
@@ -18,8 +22,9 @@ Player player = {
     .hp = 100,
     .speed = 5.0,
 };
-Enemy *enemies = NULL;
+Enemy enemies[MAX_ENEMIES];
 int enemiesCount = 0;
+Timer spawnTimer;
 
 int main() {
     if (!InitSDL()) {
@@ -31,6 +36,8 @@ int main() {
     }
 
     srand(time(NULL));
+
+    spawnTimer = timerCreate(10, true);
 
     StartLoop(update, render);
 
@@ -59,7 +66,13 @@ void update(float dt, SDL_Window *window) {
     if (IsKeyDown(SDL_SCANCODE_ESCAPE)) {
         ExitGame();
     }
-    
+
+    if (timerHasEnded(&spawnTimer)) {
+        if (enemiesCount < MAX_ENEMIES) {
+            enemies[enemiesCount] = spawnEnemy(screen, window);
+            enemiesCount++;
+        }
+    }
 }
 
 void render(float dt, SDL_Renderer *renderer) {
