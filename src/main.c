@@ -56,6 +56,10 @@ void update(float dt, SDL_Window *window) {
         playerMove(&player, 'd');
         SetCoordsToSDL(player.coords, screen, &player.shell);
     }
+    if (IsKeyDown(SDL_SCANCODE_ESCAPE)) {
+        ExitGame();
+    }
+    
 }
 
 void render(float dt, SDL_Renderer *renderer) {
