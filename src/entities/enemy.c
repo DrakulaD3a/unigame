@@ -5,6 +5,9 @@
 #define ENEMY_WIDTH 20.
 #define ENEMY_HEIGHT 20.
 
+// FIXME: Set the distance to player instead of using the window size
+// We don't want the game to be pay to win(bigger monitor == enemies spawning
+// further away)
 Enemy spawnEnemy(Screen screen, SDL_Window *window) {
     int w, h;
     SDL_GetWindowSize(window, &w, &h);
