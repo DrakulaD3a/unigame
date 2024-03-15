@@ -1,6 +1,6 @@
-#include "engine.h"
-#include "enemy.h"
-#include "player.h"
+#include "engine/engine.h"
+#include "entities/enemy.h"
+#include "entities/player.h"
 #include <stdbool.h>
 #include <stdlib.h>
 #include <time.h>
