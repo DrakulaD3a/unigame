@@ -37,3 +37,5 @@ bool IsKeyPressed(SDL_Scancode key);
 void GetMousePosition(int *x, int *y);
 
 bool IsMouseButtonPressed(int button);
+
+SDL_Texture *LoadTexture(const char *path);

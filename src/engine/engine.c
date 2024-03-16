@@ -150,3 +150,11 @@ void GetMousePosition(int *x, int *y) { SDL_GetMouseState(x, y); }
 bool IsMouseButtonPressed(int button) {
     return SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(button);
 }
+
+SDL_Texture *LoadTexture(const char *path) {
+    SDL_Texture *texture = IMG_LoadTexture(renderer, path);
+    if (!texture) {
+        fprintf(stderr, "IMG_LoadTexture failed: %s\n", IMG_GetError());
+    }
+    return texture;
+}

@@ -2,6 +2,7 @@
 #include "entities/enemy.h"
 #include "entities/player.h"
 #include "timer.h"
+#include <SDL2/SDL_render.h>
 #include <stdbool.h>
 #include <stdlib.h>
 #include <time.h>
@@ -38,6 +39,7 @@ int main() {
     srand(time(NULL));
 
     spawnTimer = timerCreate(10, true);
+    player.texture = LoadTexture("assets/Bob.png");
 
     StartLoop(update, render);
 
@@ -81,6 +83,5 @@ void render(float dt, SDL_Renderer *renderer) {
     SDL_RenderClear(renderer);
 
     // Rendering player
-    SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
-    SDL_RenderFillRectF(renderer, &player.shell);
+    SDL_RenderCopyF(renderer, player.texture, NULL, &player.shell);
 }

@@ -1,4 +1,5 @@
 #pragma once
+
 #include "../engine/engine.h"
 #include <SDL2/SDL.h>
 
@@ -7,6 +8,8 @@ typedef struct {
     Coords coords;
     int hp;
     float speed;
+
+    SDL_Texture *texture;
 } Player;
 
 // dir: w - up, s - down, a - left, d - right
