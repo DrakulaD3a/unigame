@@ -1,8 +1,8 @@
 #include "enemy.h"
+#include "../utils.h"
 #include "player.h"
 #include <SDL2/SDL_rect.h>
 #include <SDL2/SDL_video.h>
-#include <math.h>
 #include <stdlib.h>
 
 #define ENEMY_WIDTH 20.
@@ -69,13 +69,4 @@ void moveEnemy(Enemy *enemy, Player *player) {
 
     enemy->coords.x -= normal.x * enemy->speed;
     enemy->coords.y -= normal.y * enemy->speed;
-}
-
-SDL_FPoint normalizeVector(SDL_FPoint vector) {
-    float scale = sqrt(1 / (vector.x * vector.x + vector.y * vector.y));
-    SDL_FPoint result = {
-        .x = vector.x * scale,
-        .y = vector.y * scale,
-    };
-    return result;
 }
