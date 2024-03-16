@@ -5,7 +5,7 @@
 
 typedef struct {
     SDL_FRect shell;
-    Coords coords;
+    SDL_FPoint coords;
     int hp;
     float speed;
 } Enemy;

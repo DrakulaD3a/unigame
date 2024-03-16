@@ -17,7 +17,7 @@ Enemy spawnEnemy(Player *player, SDL_Window *window) {
 
     short dis_offset = rand() % 100;
 
-    Coords coords;
+    SDL_FPoint coords;
 
     switch (side) {
     // NORTH
@@ -29,8 +29,8 @@ Enemy spawnEnemy(Player *player, SDL_Window *window) {
 
     // EAST
     case 1:
-        coords.x = player->coords.x + ENEMY_WIDTH + ENEMY_SPAWN_DIS_MIN +
-                   dis_offset;
+        coords.x =
+            player->coords.x + ENEMY_WIDTH + ENEMY_SPAWN_DIS_MIN + dis_offset;
         coords.y = player->coords.y + rand() % h - ENEMY_HEIGHT / 2.;
         break;
 

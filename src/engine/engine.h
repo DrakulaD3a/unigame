@@ -3,16 +3,11 @@
 #include <SDL2/SDL.h>
 #include <stdbool.h>
 
-typedef struct {
-    double x;
-    double y;
-} Coords;
+typedef SDL_FPoint Screen;
 
-typedef Coords Screen;
+SDL_FPoint CoordsToSDL(SDL_FPoint coords, Screen screen);
 
-SDL_FPoint CoordsToSDL(Coords coords, Screen screen);
-
-void SetCoordsToSDL(Coords coords, Screen screen, SDL_FRect *shell);
+void SetCoordsToSDL(SDL_FPoint coords, Screen screen, SDL_FRect *shell);
 
 // ==============================================================================
 

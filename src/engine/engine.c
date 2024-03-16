@@ -12,7 +12,7 @@ static const Uint8 *keyStates = NULL;
 static Uint8 lastKeyStates[SDL_NUM_SCANCODES];
 static bool isRunning = true;
 
-SDL_FPoint CoordsToSDL(Coords coords, Screen screen) {
+SDL_FPoint CoordsToSDL(SDL_FPoint coords, Screen screen) {
     // TODO: Bounds checking
     SDL_FPoint result;
     result.x = coords.x - screen.x;
@@ -20,7 +20,7 @@ SDL_FPoint CoordsToSDL(Coords coords, Screen screen) {
     return result;
 }
 
-void SetCoordsToSDL(Coords coords, Screen screen, SDL_FRect *shell) {
+void SetCoordsToSDL(SDL_FPoint coords, Screen screen, SDL_FRect *shell) {
     shell->x = (int)CoordsToSDL(coords, screen).x;
     shell->y = (int)CoordsToSDL(coords, screen).y;
 }
