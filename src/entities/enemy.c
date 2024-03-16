@@ -1,6 +1,8 @@
 #include "enemy.h"
 #include "player.h"
+#include <SDL2/SDL_rect.h>
 #include <SDL2/SDL_video.h>
+#include <math.h>
 #include <stdlib.h>
 
 #define ENEMY_WIDTH 20.
@@ -10,7 +12,7 @@
 // FIXME: Set the distance to player instead of using the window size
 // We don't want the game to be pay to win(bigger monitor == enemies spawning
 // further away)
-Enemy spawnEnemy(Player *player , SDL_Window *window) {
+Enemy spawnEnemy(Player *player, SDL_Window *window) {
     int w, h;
     SDL_GetWindowSize(window, &w, &h);
 
@@ -24,12 +26,14 @@ Enemy spawnEnemy(Player *player , SDL_Window *window) {
     // NORTH
     case 0:
         coords.x = player->coords.x + rand() % w - ENEMY_WIDTH / 2.;
-        coords.y = player->coords.y - ENEMY_HEIGHT - ENEMY_SPAWN_DIS_MIN + dis_offset;
+        coords.y =
+            player->coords.y - ENEMY_HEIGHT - ENEMY_SPAWN_DIS_MIN + dis_offset;
         break;
 
     // EAST
     case 1:
-        coords.x = player->coords.x + w + ENEMY_WIDTH + ENEMY_SPAWN_DIS_MIN + dis_offset;
+        coords.x = player->coords.x + w + ENEMY_WIDTH + ENEMY_SPAWN_DIS_MIN +
+                   dis_offset;
         coords.y = player->coords.y + rand() % h - ENEMY_HEIGHT / 2.;
         break;
 
@@ -41,7 +45,8 @@ Enemy spawnEnemy(Player *player , SDL_Window *window) {
 
     // WEST
     case 3:
-        coords.x = player->coords.x - ENEMY_WIDTH - ENEMY_SPAWN_DIS_MIN + dis_offset;
+        coords.x =
+            player->coords.x - ENEMY_WIDTH - ENEMY_SPAWN_DIS_MIN + dis_offset;
         coords.y = player->coords.y + rand() % h - ENEMY_HEIGHT / 2.;
         break;
     }
@@ -56,4 +61,24 @@ Enemy spawnEnemy(Player *player , SDL_Window *window) {
         .speed = 5.0,
     };
     return enemy;
+}
+
+void moveEnemy(Enemy *enemy, Player *player) {
+    SDL_FPoint direction = {
+        .x = enemy->coords.x - player->coords.x,
+        .y = enemy->coords.y - player->coords.y,
+    };
+    SDL_FPoint normal = normalizeVector(direction);
+
+    enemy->coords.x -= normal.x * enemy->speed;
+    enemy->coords.y -= normal.y * enemy->speed;
+}
+
+SDL_FPoint normalizeVector(SDL_FPoint vector) {
+    float scale = sqrt(1 / (vector.x * vector.x + vector.y * vector.y));
+    SDL_FPoint result = {
+        .x = vector.x * scale,
+        .y = vector.y * scale,
+    };
+    return result;
 }

@@ -11,3 +11,7 @@ typedef struct {
 } Enemy;
 
 Enemy spawnEnemy(Player *player, SDL_Window *window);
+
+void moveEnemy(Enemy *enemy, Player *player);
+
+SDL_FPoint normalizeVector(SDL_FPoint vector);

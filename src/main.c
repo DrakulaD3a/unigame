@@ -75,6 +75,10 @@ void update(float dt, SDL_Window *window) {
             enemiesCount++;
         }
     }
+    for (int i = 0; i < enemiesCount; i++) {
+        moveEnemy(&enemies[i], &player);
+        SetCoordsToSDL(enemies[i].coords, screen, &enemies[i].shell);
+    }
 }
 
 void render(float dt, SDL_Renderer *renderer) {
@@ -84,4 +88,10 @@ void render(float dt, SDL_Renderer *renderer) {
 
     // Rendering player
     SDL_RenderCopyF(renderer, player.texture, NULL, &player.shell);
+
+    // Rendering enemies
+    for (int i = 0; i < enemiesCount; i++) {
+        SDL_SetRenderDrawColor(renderer, 255, 255, 0, 255);
+        SDL_RenderFillRectF(renderer, &enemies[i].shell);
+    }
 }
