@@ -1,5 +1,6 @@
 #pragma once
 #include "../engine/engine.h"
+#include "player.h"
 #include <SDL2/SDL.h>
 
 typedef struct {
@@ -9,4 +10,4 @@ typedef struct {
     float speed;
 } Enemy;
 
-Enemy spawnEnemy(Screen screen, SDL_Window *window);
+Enemy spawnEnemy(Player *player, SDL_Window *window);

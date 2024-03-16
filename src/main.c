@@ -71,7 +71,7 @@ void update(float dt, SDL_Window *window) {
 
     if (timerHasEnded(&spawnTimer)) {
         if (enemiesCount < MAX_ENEMIES) {
-            enemies[enemiesCount] = spawnEnemy(screen, window);
+            enemies[enemiesCount] = spawnEnemy(&player, window);
             enemiesCount++;
         }
     }
