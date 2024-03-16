@@ -109,7 +109,7 @@ void StartLoop(void (*update)(float, SDL_Window *),
             }
         }
 
-        double newTime = SDL_GetTicks() / 1000.;
+        double newTime = SDL_GetTicks64() / 1000.;
         double frameTime = newTime - currentTime;
         if (frameTime > 0.25) {
             frameTime = 0.25;
