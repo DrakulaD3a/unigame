@@ -91,7 +91,8 @@ bool CreateWindow(const char *title, int width, int height) {
     return true;
 }
 
-void StartLoop(void (*update)(float, SDL_Window *), void (*render)(float, SDL_Renderer *)) {
+void StartLoop(void (*update)(float, SDL_Window *),
+               void (*render)(float, SDL_Renderer *)) {
     double time = 0.;
     const double dt = 1. / 60.;
     double currentTime = SDL_GetTicks() / 1000.;
