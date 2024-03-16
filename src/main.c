@@ -2,7 +2,7 @@
 #include "entities/enemy.h"
 #include "entities/player.h"
 #include "timer.h"
-#include <SDL2/SDL_render.h>
+#include <SDL2/SDL.h>
 #include <stdbool.h>
 #include <stdlib.h>
 #include <time.h>
@@ -78,6 +78,18 @@ void update(float dt, SDL_Window *window) {
     for (int i = 0; i < enemiesCount; i++) {
         moveEnemy(&enemies[i], &player);
         SetCoordsToSDL(enemies[i].coords, screen, &enemies[i].shell);
+    }
+
+    for (int i = 0; i < enemiesCount; i++) {
+        if (SDL_HasIntersectionF(&player.shell, &enemies[i].shell)) {
+            player.hp--;
+            deleteEnemy(enemies, enemiesCount, i);
+            enemiesCount--;
+            break;
+        }
+    }
+    if (player.hp <= 0) {
+        ExitGame();
     }
 }
 

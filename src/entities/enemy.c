@@ -70,3 +70,9 @@ void moveEnemy(Enemy *enemy, Player *player) {
     enemy->coords.x -= normal.x * enemy->speed;
     enemy->coords.y -= normal.y * enemy->speed;
 }
+
+void deleteEnemy(Enemy enemy[], int enemiesCount, int index) {
+    for (int i = index; i < enemiesCount; i++) {
+        enemy[i] = enemy[i + 1];
+    }
+}
