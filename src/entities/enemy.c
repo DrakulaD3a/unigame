@@ -9,9 +9,6 @@
 #define ENEMY_HEIGHT 20.
 #define ENEMY_SPAWN_DIS_MIN 350.
 
-// FIXME: Set the distance to player instead of using the window size
-// We don't want the game to be pay to win(bigger monitor == enemies spawning
-// further away)
 Enemy spawnEnemy(Player *player, SDL_Window *window) {
     int w, h;
     SDL_GetWindowSize(window, &w, &h);
@@ -32,7 +29,7 @@ Enemy spawnEnemy(Player *player, SDL_Window *window) {
 
     // EAST
     case 1:
-        coords.x = player->coords.x + w + ENEMY_WIDTH + ENEMY_SPAWN_DIS_MIN +
+        coords.x = player->coords.x + ENEMY_WIDTH + ENEMY_SPAWN_DIS_MIN +
                    dis_offset;
         coords.y = player->coords.y + rand() % h - ENEMY_HEIGHT / 2.;
         break;
@@ -40,7 +37,7 @@ Enemy spawnEnemy(Player *player, SDL_Window *window) {
     // SOUTH
     case 2:
         coords.x = player->coords.x + rand() % w - ENEMY_WIDTH / 2.;
-        coords.y = player->coords.y + h + ENEMY_SPAWN_DIS_MIN + dis_offset;
+        coords.y = player->coords.y + ENEMY_SPAWN_DIS_MIN + dis_offset;
         break;
 
     // WEST
