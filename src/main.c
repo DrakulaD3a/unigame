@@ -81,7 +81,7 @@ void update(float dt, SDL_Window *window) {
     }
 
     for (int i = 0; i < enemiesCount; i++) {
-        if (SDL_HasIntersectionF(&player.shell, &enemies[i].shell)) {
+        if (HasIntersectionF(&player.shell, &enemies[i].shell)) {
             player.hp--;
             deleteEnemy(enemies, enemiesCount, i);
             enemiesCount--;

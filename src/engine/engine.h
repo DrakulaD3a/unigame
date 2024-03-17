@@ -35,3 +35,5 @@ void GetMousePosition(int *x, int *y);
 bool IsMouseButtonPressed(int button);
 
 SDL_Texture *LoadTexture(const char *path);
+
+bool HasIntersectionF(const SDL_FRect *A, const SDL_FRect *B);
