@@ -2,6 +2,7 @@
 #include "entities/enemy.h"
 #include "entities/player.h"
 #include "timer.h"
+#include "utils.h"
 #include <SDL2/SDL.h>
 #include <stdbool.h>
 #include <stdlib.h>
@@ -22,6 +23,7 @@ Player player = {
     .coords = {50.0, 50.0},
     .hp = 100,
     .speed = 250.0,
+    .direction = DOWN,
 };
 Enemy enemies[MAX_ENEMIES];
 int enemiesCount = 0;
@@ -40,7 +42,7 @@ int main() {
 
     srand(time(NULL));
 
-    spawnTimer = timerCreate(10, true);
+    spawnTimer = timerCreate(5, true);
     player.texture = LoadTexture("assets/Bob.png");
     enemyTexture = LoadTexture("assets/Dero.png");
     StartLoop(update, render);
@@ -70,7 +72,7 @@ void update(float dt, SDL_Window *window) {
 
     for (int i = 0; i < enemiesCount; i++) {
         if (HasIntersectionF(&player.shell, &enemies[i].shell)) {
-            player.hp--;
+            player.hp -= 5;
             deleteEnemy(enemies, enemiesCount, i);
             enemiesCount--;
             break;
@@ -82,17 +84,25 @@ void update(float dt, SDL_Window *window) {
 }
 
 void render(float dt, SDL_Renderer *renderer) {
+    SDL_Rect drawRect = {
+        .x = 0,
+        .y = 0,
+        .w = 32,
+        .h = 32,
+    };
+
     // Clearing the screen
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
     SDL_RenderClear(renderer);
 
     // Rendering player
-    SDL_RenderCopyF(renderer, player.texture, NULL, &player.shell);
+    drawRect.x = player.direction;
+    SDL_RenderCopyF(renderer, player.texture, &drawRect, &player.shell);
 
     // Rendering enemies
     for (int i = 0; i < enemiesCount; i++) {
-        SDL_SetRenderDrawColor(renderer, 255, 255, 0, 255);
-        SDL_RenderFillRectF(renderer, &enemies[i].shell);
-        SDL_RenderCopyF(renderer, enemies[i].texture, NULL, &enemies[i].shell);
+        drawRect.x = enemies[i].direction;
+        SDL_RenderCopyF(renderer, enemies[i].texture, &drawRect,
+                        &enemies[i].shell);
     }
 }

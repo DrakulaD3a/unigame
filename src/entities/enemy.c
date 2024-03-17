@@ -7,6 +7,7 @@
 
 #define ENEMY_WIDTH 64.
 #define ENEMY_HEIGHT 64.
+#define ENEMY_SPEED 185.0 + (rand() % 30)
 #define ENEMY_SPAWN_DIS_MIN 350.
 
 Enemy spawnEnemy(Player *player, SDL_Window *window, SDL_Texture *texture) {
@@ -55,7 +56,8 @@ Enemy spawnEnemy(Player *player, SDL_Window *window, SDL_Texture *texture) {
                   .h = ENEMY_HEIGHT},
         .coords = coords,
         .hp = 100,
-        .speed = 200.0,
+        .speed = ENEMY_SPEED,
+        .direction = DOWN,
         .texture = texture,
     };
     return enemy;
@@ -68,6 +70,7 @@ void moveEnemy(Enemy *enemy, Player *player, float dt) {
     };
     SDL_FPoint normal = normalizeVector(direction);
 
+    enemy->direction = DirectionFromVector(direction);
     enemy->coords.x -= normal.x * enemy->speed * dt;
     enemy->coords.y -= normal.y * enemy->speed * dt;
 }

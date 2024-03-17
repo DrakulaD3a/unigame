@@ -3,14 +3,6 @@
 #include <SDL2/SDL.h>
 #include <stdbool.h>
 
-typedef SDL_FPoint Screen;
-
-SDL_FPoint CoordsToSDL(SDL_FPoint coords, Screen screen);
-
-void SetCoordsToSDL(SDL_FPoint coords, Screen screen, SDL_FRect *shell);
-
-// ==============================================================================
-
 bool InitSDL();
 
 void DeinitSDL();
@@ -35,5 +27,3 @@ void GetMousePosition(int *x, int *y);
 bool IsMouseButtonPressed(int button);
 
 SDL_Texture *LoadTexture(const char *path);
-
-bool HasIntersectionF(const SDL_FRect *A, const SDL_FRect *B);
