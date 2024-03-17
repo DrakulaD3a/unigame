@@ -8,9 +8,11 @@ typedef struct {
     SDL_FPoint coords;
     int hp;
     float speed;
+
+    SDL_Texture *texture;
 } Enemy;
 
-Enemy spawnEnemy(Player *player, SDL_Window *window);
+Enemy spawnEnemy(Player *player, SDL_Window *window, SDL_Texture *texture);
 
 void moveEnemy(Enemy *enemy, Player *player);
 

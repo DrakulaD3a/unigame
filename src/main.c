@@ -25,6 +25,8 @@ Player player = {
 };
 Enemy enemies[MAX_ENEMIES];
 int enemiesCount = 0;
+SDL_Texture *enemyTexture;
+
 Timer spawnTimer;
 
 int main() {
@@ -40,7 +42,7 @@ int main() {
 
     spawnTimer = timerCreate(10, true);
     player.texture = LoadTexture("assets/Bob.png");
-
+    enemyTexture = LoadTexture("assets/Dero.png");
     StartLoop(update, render);
 
     DeinitSDL();
@@ -71,7 +73,7 @@ void update(float dt, SDL_Window *window) {
 
     if (timerHasEnded(&spawnTimer)) {
         if (enemiesCount < MAX_ENEMIES) {
-            enemies[enemiesCount] = spawnEnemy(&player, window);
+            enemies[enemiesCount] = spawnEnemy(&player, window, enemyTexture);
             enemiesCount++;
         }
     }
@@ -105,5 +107,7 @@ void render(float dt, SDL_Renderer *renderer) {
     for (int i = 0; i < enemiesCount; i++) {
         SDL_SetRenderDrawColor(renderer, 255, 255, 0, 255);
         SDL_RenderFillRectF(renderer, &enemies[i].shell);
+        SDL_RenderCopyF(renderer, enemies[i].texture, NULL, &enemies[i].shell);
+
     }
 }

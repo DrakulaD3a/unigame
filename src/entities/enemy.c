@@ -5,11 +5,11 @@
 #include <SDL2/SDL_video.h>
 #include <stdlib.h>
 
-#define ENEMY_WIDTH 20.
-#define ENEMY_HEIGHT 20.
+#define ENEMY_WIDTH 64.
+#define ENEMY_HEIGHT 64.
 #define ENEMY_SPAWN_DIS_MIN 350.
 
-Enemy spawnEnemy(Player *player, SDL_Window *window) {
+Enemy spawnEnemy(Player *player, SDL_Window *window, SDL_Texture *texture) {
     int w, h;
     SDL_GetWindowSize(window, &w, &h);
 
@@ -56,6 +56,7 @@ Enemy spawnEnemy(Player *player, SDL_Window *window) {
         .coords = coords,
         .hp = 100,
         .speed = 5.0,
+        .texture = texture,
     };
     return enemy;
 }
