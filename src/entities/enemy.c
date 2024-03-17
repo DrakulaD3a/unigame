@@ -55,21 +55,21 @@ Enemy spawnEnemy(Player *player, SDL_Window *window, SDL_Texture *texture) {
                   .h = ENEMY_HEIGHT},
         .coords = coords,
         .hp = 100,
-        .speed = 5.0,
+        .speed = 200.0,
         .texture = texture,
     };
     return enemy;
 }
 
-void moveEnemy(Enemy *enemy, Player *player) {
+void moveEnemy(Enemy *enemy, Player *player, float dt) {
     SDL_FPoint direction = {
         .x = enemy->coords.x - player->coords.x,
         .y = enemy->coords.y - player->coords.y,
     };
     SDL_FPoint normal = normalizeVector(direction);
 
-    enemy->coords.x -= normal.x * enemy->speed;
-    enemy->coords.y -= normal.y * enemy->speed;
+    enemy->coords.x -= normal.x * enemy->speed * dt;
+    enemy->coords.y -= normal.y * enemy->speed * dt;
 }
 
 void deleteEnemy(Enemy enemy[], int enemiesCount, int index) {

@@ -14,6 +14,6 @@ typedef struct {
 
 Enemy spawnEnemy(Player *player, SDL_Window *window, SDL_Texture *texture);
 
-void moveEnemy(Enemy *enemy, Player *player);
+void moveEnemy(Enemy *enemy, Player *player, float dt);
 
 void deleteEnemy(Enemy enemy[], int enemiesCount, int index);

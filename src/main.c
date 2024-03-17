@@ -18,10 +18,10 @@ void render(float dt, SDL_Renderer *renderer);
 
 Screen screen = {0.0, 0.0};
 Player player = {
-    .shell = {50, 50, 20, 20},
+    .shell = {50, 50, 64, 64},
     .coords = {50.0, 50.0},
     .hp = 100,
-    .speed = 5.0,
+    .speed = 250.0,
 };
 Enemy enemies[MAX_ENEMIES];
 int enemiesCount = 0;
@@ -51,22 +51,8 @@ int main() {
 }
 
 void update(float dt, SDL_Window *window) {
-    if (IsKeyDown(SDL_SCANCODE_W)) {
-        playerMove(&player, 'w');
-        SetCoordsToSDL(player.coords, screen, &player.shell);
-    }
-    if (IsKeyDown(SDL_SCANCODE_S)) {
-        playerMove(&player, 's');
-        SetCoordsToSDL(player.coords, screen, &player.shell);
-    }
-    if (IsKeyDown(SDL_SCANCODE_A)) {
-        playerMove(&player, 'a');
-        SetCoordsToSDL(player.coords, screen, &player.shell);
-    }
-    if (IsKeyDown(SDL_SCANCODE_D)) {
-        playerMove(&player, 'd');
-        SetCoordsToSDL(player.coords, screen, &player.shell);
-    }
+    handlePlayerMovement(&player, &screen, dt);
+
     if (IsKeyDown(SDL_SCANCODE_ESCAPE)) {
         ExitGame();
     }
@@ -78,7 +64,7 @@ void update(float dt, SDL_Window *window) {
         }
     }
     for (int i = 0; i < enemiesCount; i++) {
-        moveEnemy(&enemies[i], &player);
+        moveEnemy(&enemies[i], &player, dt);
         SetCoordsToSDL(enemies[i].coords, screen, &enemies[i].shell);
     }
 
@@ -108,6 +94,5 @@ void render(float dt, SDL_Renderer *renderer) {
         SDL_SetRenderDrawColor(renderer, 255, 255, 0, 255);
         SDL_RenderFillRectF(renderer, &enemies[i].shell);
         SDL_RenderCopyF(renderer, enemies[i].texture, NULL, &enemies[i].shell);
-
     }
 }

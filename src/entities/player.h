@@ -13,6 +13,6 @@ typedef struct {
 } Player;
 
 // dir: w - up, s - down, a - left, d - right
-void playerMove(Player *player, char dir);
+void handlePlayerMovement(Player *player, Screen *screen, float dt);
 
 void attack(Player *player);
