@@ -12,19 +12,6 @@ static const Uint8 *keyStates = NULL;
 static Uint8 lastKeyStates[SDL_NUM_SCANCODES];
 static bool isRunning = true;
 
-SDL_FPoint CoordsToSDL(SDL_FPoint coords, Screen screen) {
-    // TODO: Bounds checking
-    SDL_FPoint result;
-    result.x = coords.x - screen.x;
-    result.y = coords.y - screen.y;
-    return result;
-}
-
-void SetCoordsToSDL(SDL_FPoint coords, Screen screen, SDL_FRect *shell) {
-    shell->x = (int)CoordsToSDL(coords, screen).x;
-    shell->y = (int)CoordsToSDL(coords, screen).y;
-}
-
 bool InitSDL() {
     if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0) {
         fprintf(stderr, "SDL_Init failed: %s\n", SDL_GetError());
@@ -158,39 +145,4 @@ SDL_Texture *LoadTexture(const char *path) {
         fprintf(stderr, "IMG_LoadTexture failed: %s\n", IMG_GetError());
     }
     return texture;
-}
-
-bool HasIntersectionF(const SDL_FRect *A, const SDL_FRect *B)
-{
-    float Amin, Amax, Bmin, Bmax;
-
-    if (!A || !B)
-    {
-        return false;
-    }
-
-    Amin = A->x;
-    Amax = Amin + A->w;
-    Bmin = B->x;
-    Bmax = Bmin + B->w;
-    if (Bmin > Amin)
-        Amin = Bmin;
-    if (Bmax < Amax)
-        Amax = Bmax;
-    if (Amax <= Amin)
-        return false;
-
-    Amin = A->y;
-    Amax = Amin + A->h;
-    Bmin = B->y;
-    Bmax = Bmin + B->h;
-    if (Bmin > Amin)
-        Amin = Bmin;
-    if (Bmax < Amax)
-        Amax = Bmax;
-    if (Amax <= Amin)
-        return false;
-
-    return true;
-    
 }

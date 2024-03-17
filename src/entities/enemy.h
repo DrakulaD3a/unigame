@@ -1,5 +1,5 @@
 #pragma once
-#include "../engine/engine.h"
+#include "../utils.h"
 #include "player.h"
 #include <SDL2/SDL.h>
 
@@ -8,6 +8,7 @@ typedef struct {
     SDL_FPoint coords;
     int hp;
     float speed;
+    Direction direction;
 
     SDL_Texture *texture;
 } Enemy;

@@ -1,4 +1,5 @@
 #include "player.h"
+#include "../engine/engine.h"
 #include "../utils.h"
 #include <SDL2/SDL.h>
 
@@ -23,6 +24,7 @@ void handlePlayerMovement(Player *player, Screen *screen, float dt) {
 
     if (direction.x != 0. || direction.y != 0.) {
         SDL_FPoint normal = normalizeVector(direction);
+        player->direction = DirectionFromVector(direction);
         player->coords.x += normal.x * player->speed * dt;
         player->coords.y += normal.y * player->speed * dt;
     }

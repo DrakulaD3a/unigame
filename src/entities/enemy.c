@@ -57,6 +57,7 @@ Enemy spawnEnemy(Player *player, SDL_Window *window, SDL_Texture *texture) {
         .coords = coords,
         .hp = 100,
         .speed = ENEMY_SPEED,
+        .direction = DOWN,
         .texture = texture,
     };
     return enemy;
@@ -69,6 +70,7 @@ void moveEnemy(Enemy *enemy, Player *player, float dt) {
     };
     SDL_FPoint normal = normalizeVector(direction);
 
+    enemy->direction = DirectionFromVector(direction);
     enemy->coords.x -= normal.x * enemy->speed * dt;
     enemy->coords.y -= normal.y * enemy->speed * dt;
 }
