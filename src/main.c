@@ -40,7 +40,7 @@ int main() {
 
     srand(time(NULL));
 
-    spawnTimer = timerCreate(10, true);
+    spawnTimer = timerCreate(5, true);
     player.texture = LoadTexture("assets/Bob.png");
     enemyTexture = LoadTexture("assets/Dero.png");
     StartLoop(update, render);
@@ -70,7 +70,7 @@ void update(float dt, SDL_Window *window) {
 
     for (int i = 0; i < enemiesCount; i++) {
         if (HasIntersectionF(&player.shell, &enemies[i].shell)) {
-            player.hp--;
+            player.hp -= 5;
             deleteEnemy(enemies, enemiesCount, i);
             enemiesCount--;
             break;
