@@ -64,15 +64,16 @@ Enemy spawnEnemy(Player *player, SDL_Window *window, SDL_Texture *texture) {
 }
 
 void moveEnemy(Enemy *enemy, Player *player, float dt) {
+    // HACK: Don't ask me why it works as it works, I don't know
     SDL_FPoint direction = {
         .x = enemy->coords.x - player->coords.x,
-        .y = enemy->coords.y - player->coords.y,
+        .y = player->coords.y - enemy->coords.y,
     };
     SDL_FPoint normal = normalizeVector(direction);
 
     enemy->direction = DirectionFromVector(direction);
     enemy->coords.x -= normal.x * enemy->speed * dt;
-    enemy->coords.y -= normal.y * enemy->speed * dt;
+    enemy->coords.y += normal.y * enemy->speed * dt;
 }
 
 void deleteEnemy(Enemy enemy[], int enemiesCount, int index) {
