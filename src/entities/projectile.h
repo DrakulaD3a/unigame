@@ -1,10 +1,8 @@
 #pragma once
 
-#include "../utils.h"
-#include <SDL2/SDL.h>
-#include "player.h"
 #include "enemy.h"
-
+#include "player.h"
+#include <SDL2/SDL.h>
 
 typedef enum {
     FIREBALL = 1,
@@ -21,8 +19,10 @@ typedef struct {
     SDL_Texture *texture;
 } Projectile;
 
-Projectile spawnProjectileP(Player *player, ProjectileTypes *type, SDL_Texture *texture);
+Projectile spawnProjectileP(Player *player, ProjectileTypes *type,
+                            SDL_Texture *texture);
 
-Projectile spawnProjectileE(Enemy *enemy, ProjectileTypes *type, SDL_Texture *texture);
+Projectile spawnProjectileE(Enemy *enemy, ProjectileTypes *type,
+                            SDL_Texture *texture);
 
 void moveProjectile(Projectile *projectile);
