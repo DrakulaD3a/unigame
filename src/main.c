@@ -8,8 +8,8 @@
 #include <stdlib.h>
 #include <time.h>
 
-#define SCREEN_WIDTH 640
-#define SCREEN_HEIGHT 480
+#define SCREEN_WIDTH 1080
+#define SCREEN_HEIGHT 720
 
 // TODO: Make this depend on time
 #define MAX_ENEMIES 10
@@ -19,8 +19,8 @@ void render(float dt, SDL_Renderer *renderer);
 
 Screen screen = {0.0, 0.0};
 Player player = {
-    .shell = {50, 50, 64, 64},
-    .coords = {50.0, 50.0},
+    .shell = {SCREEN_WIDTH / 2. - 32., SCREEN_HEIGHT / 2. - 32., 64, 64},
+    .coords = {SCREEN_WIDTH / 2. - 32., SCREEN_HEIGHT / 2. - 32.},
     .hp = 100,
     .speed = 250.0,
     .direction = DOWN,
@@ -53,6 +53,13 @@ int main() {
 }
 
 void update(float dt, SDL_Window *window) {
+    int w, h;
+    SDL_GetWindowSize(window, &w, &h);
+    if (player.shell.x != w / 2. || player.shell.y != w / 2.) {
+        screen.x = player.coords.x - w / 2. + player.shell.w / 2.;
+        screen.y = player.coords.y - h / 2. + player.shell.h / 2.;
+    }
+
     handlePlayerMovement(&player, &screen, dt);
 
     if (IsKeyDown(SDL_SCANCODE_ESCAPE)) {
@@ -67,7 +74,7 @@ void update(float dt, SDL_Window *window) {
     }
     for (int i = 0; i < enemiesCount; i++) {
         moveEnemy(&enemies[i], &player, dt);
-        SetCoordsToSDL(enemies[i].coords, screen, &enemies[i].shell);
+        SetCoordsToSDL(enemies[i].coords, &screen, &enemies[i].shell);
     }
 
     for (int i = 0; i < enemiesCount; i++) {
