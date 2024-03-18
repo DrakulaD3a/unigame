@@ -2,15 +2,15 @@
 #include <math.h>
 #include <stdbool.h>
 
-SDL_FPoint CoordsToSDL(SDL_FPoint coords, Screen screen) {
+SDL_FPoint CoordsToSDL(SDL_FPoint coords, Screen *screen) {
     // TODO: Bounds checking
     SDL_FPoint result;
-    result.x = coords.x - screen.x;
-    result.y = coords.y - screen.y;
+    result.x = coords.x - screen->x;
+    result.y = coords.y - screen->y;
     return result;
 }
 
-void SetCoordsToSDL(SDL_FPoint coords, Screen screen, SDL_FRect *shell) {
+void SetCoordsToSDL(SDL_FPoint coords, Screen *screen, SDL_FRect *shell) {
     shell->x = (int)CoordsToSDL(coords, screen).x;
     shell->y = (int)CoordsToSDL(coords, screen).y;
 }

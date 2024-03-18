@@ -27,7 +27,9 @@ void handlePlayerMovement(Player *player, Screen *screen, float dt) {
         player->direction = DirectionFromVector(direction);
         player->coords.x += normal.x * player->speed * dt;
         player->coords.y += normal.y * player->speed * dt;
+        screen->x += normal.x * player->speed * dt;
+        screen->y += normal.y * player->speed * dt;
     }
 
-    SetCoordsToSDL(player->coords, *screen, &player->shell);
+    SetCoordsToSDL(player->coords, screen, &player->shell);
 }
