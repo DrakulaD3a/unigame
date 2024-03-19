@@ -1,6 +1,7 @@
 #include "engine/engine.h"
 #include "entities/enemy.h"
 #include "entities/player.h"
+#include "entities/projectile.h"
 #include "timer.h"
 #include "utils.h"
 #include <SDL2/SDL.h>
@@ -13,6 +14,8 @@
 
 // TODO: Make this depend on time
 #define MAX_ENEMIES 10
+
+#define MAX_PROJECTILES 1
 
 void update(float dt, SDL_Window *window);
 void render(float dt, SDL_Renderer *renderer);
@@ -28,6 +31,10 @@ Player player = {
 Enemy enemies[MAX_ENEMIES];
 int enemiesCount = 0;
 SDL_Texture *enemyTexture;
+
+Projectile projectiles[MAX_PROJECTILES];
+int projectileCount = 0;
+SDL_Texture *firebalTexture;
 
 Timer spawnTimer;
 
@@ -45,6 +52,7 @@ int main() {
     spawnTimer = timerCreate(5, true);
     player.texture = LoadTexture("assets/Bob.png");
     enemyTexture = LoadTexture("assets/Dero.png");
+    firebalTexture = LoadTexture("assets/Fireball.png");
     StartLoop(update, render);
 
     DeinitSDL();
@@ -66,6 +74,14 @@ void update(float dt, SDL_Window *window) {
         ExitGame();
     }
 
+    if (IsKeyDown(SDL_SCANCODE_SPACE)) {
+        if (projectileCount < MAX_PROJECTILES) {
+            projectiles[projectileCount] =
+                spawnProjectileP(&player, FIREBALL, firebalTexture, &screen);
+            projectileCount++;
+        }
+    }
+
     if (timerHasEnded(&spawnTimer)) {
         if (enemiesCount < MAX_ENEMIES) {
             enemies[enemiesCount] = spawnEnemy(&player, window, enemyTexture);
@@ -75,6 +91,19 @@ void update(float dt, SDL_Window *window) {
     for (int i = 0; i < enemiesCount; i++) {
         moveEnemy(&enemies[i], &player, dt);
         SetCoordsToSDL(enemies[i].coords, &screen, &enemies[i].shell);
+    }
+
+    for (int i = 0; i < projectileCount; i++) {
+        moveProjectile(&projectiles[i], dt);
+        SetCoordsToSDL(projectiles[i].coords, &screen, &projectiles[i].shell);
+    }
+
+    for (int i = 0; i < projectileCount; i++) {
+        if (projectiles[i].distanceTraveled > 500) {
+
+            deleteProjectile(projectiles, projectileCount, i);
+            projectileCount--;
+        }
     }
 
     for (int i = 0; i < enemiesCount; i++) {
@@ -111,5 +140,10 @@ void render(float dt, SDL_Renderer *renderer) {
         drawRect.x = enemies[i].direction;
         SDL_RenderCopyF(renderer, enemies[i].texture, &drawRect,
                         &enemies[i].shell);
+    }
+
+    for (int i = 0; i < projectileCount; i++) {
+        SDL_RenderCopyF(renderer, projectiles[i].texture, NULL,
+                        &projectiles[i].shell);
     }
 }

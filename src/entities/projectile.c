@@ -2,10 +2,19 @@
 #include "../engine/engine.h"
 #include <SDL2/SDL.h>
 
-Projectile spawnProjectileP(Player *player, ProjectileTypes *type,
-                            SDL_Texture *texture) {
+Projectile spawnProjectileP(Player *player, ProjectileTypes type,
+                            SDL_Texture *texture, Screen *screen) {
     int x, y;
     GetMousePosition(&x, &y);
+
+    SDL_FPoint direction = {
+        .x = x - player->coords.x,
+        .y = y - player->coords.y,
+    };
+
+    direction = SDLToCoords(direction, screen);
+
+    SDL_FPoint normal = normalizeVector(direction);
 
     Projectile projectile = {
         .shell =
@@ -20,21 +29,27 @@ Projectile spawnProjectileP(Player *player, ProjectileTypes *type,
                 .x = player->coords.x,
                 .y = player->coords.y,
             },
-        .destination =
-            {
-                .x = x,
-                .y = y,
-            },
+        .direction = normal,
+        .speed = 500,
         .texture = texture,
     };
 
     return projectile;
 }
 
-Projectile spawnProjectileE(Enemy *enemy, ProjectileTypes *type,
-                            SDL_Texture *texture) {
+Projectile spawnProjectileE(Enemy *enemy, ProjectileTypes type,
+                            SDL_Texture *texture, Screen *screen) {
     int x, y;
     GetMousePosition(&x, &y);
+
+    SDL_FPoint direction = {
+        .x = x - enemy->coords.x,
+        .y = y - enemy->coords.y,
+    };
+
+    direction = SDLToCoords(direction, screen);
+
+    SDL_FPoint normal = normalizeVector(direction);
 
     Projectile projectile = {
         .shell =
@@ -49,13 +64,23 @@ Projectile spawnProjectileE(Enemy *enemy, ProjectileTypes *type,
                 .x = enemy->coords.x,
                 .y = enemy->coords.y,
             },
-        .destination =
-            {
-                .x = x,
-                .y = y,
-            },
+        .direction = normal,
+        .speed = 500,
         .texture = texture,
     };
 
     return projectile;
+}
+
+void moveProjectile(Projectile *projectile, float dt) {
+    projectile->coords.y += projectile->direction.y * projectile->speed * dt;
+    projectile->coords.x += projectile->direction.x * projectile->speed * dt;
+    projectile->distanceTraveled += projectile->speed * dt;
+}
+
+void deleteProjectile(Projectile projectiles[], int projectileCount,
+                      int index) {
+    for (int i = index; i < projectileCount; i++) {
+        projectiles[i] = projectiles[i + 1];
+    }
 }

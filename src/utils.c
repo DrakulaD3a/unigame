@@ -10,6 +10,14 @@ SDL_FPoint CoordsToSDL(SDL_FPoint coords, Screen *screen) {
     return result;
 }
 
+SDL_FPoint SDLToCoords(SDL_FPoint coords, Screen *screen) {
+    // TODO: Bounds checking
+    SDL_FPoint result;
+    result.x = coords.x + screen->x;
+    result.y = coords.y + screen->y;
+    return result;
+}
+
 void SetCoordsToSDL(SDL_FPoint coords, Screen *screen, SDL_FRect *shell) {
     shell->x = (int)CoordsToSDL(coords, screen).x;
     shell->y = (int)CoordsToSDL(coords, screen).y;

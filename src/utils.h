@@ -7,6 +7,8 @@ typedef SDL_FPoint Screen;
 
 SDL_FPoint CoordsToSDL(SDL_FPoint coords, Screen *screen);
 
+SDL_FPoint SDLToCoords(SDL_FPoint coords, Screen *screen);
+
 void SetCoordsToSDL(SDL_FPoint coords, Screen *screen, SDL_FRect *shell);
 
 SDL_FPoint normalizeVector(SDL_FPoint vector);

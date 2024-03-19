@@ -13,16 +13,20 @@ typedef enum {
 typedef struct {
     SDL_FRect shell;
     SDL_FPoint coords;
-    SDL_FPoint destination;
+    SDL_FPoint direction;
+    float distanceTraveled;
     float speed;
+    bool reachedDest;
 
     SDL_Texture *texture;
 } Projectile;
 
-Projectile spawnProjectileP(Player *player, ProjectileTypes *type,
-                            SDL_Texture *texture);
+Projectile spawnProjectileP(Player *player, ProjectileTypes type,
+                            SDL_Texture *texture, Screen *screen);
 
-Projectile spawnProjectileE(Enemy *enemy, ProjectileTypes *type,
-                            SDL_Texture *texture);
+Projectile spawnProjectileE(Enemy *enemy, ProjectileTypes type,
+                            SDL_Texture *texture, Screen *screen);
 
-void moveProjectile(Projectile *projectile);
+void moveProjectile(Projectile *projectile, float dt);
+
+void deleteProjectile(Projectile projectiles[], int projectileCount, int index);
