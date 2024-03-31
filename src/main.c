@@ -5,6 +5,7 @@
 #include "timer.h"
 #include "utils.h"
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_render.h>
 #include <stdbool.h>
 #include <stdlib.h>
 #include <time.h>
@@ -36,6 +37,14 @@ Projectile projectiles[MAX_PROJECTILES];
 int projectileCount = 0;
 SDL_Texture *firebalTexture;
 
+SDL_FRect floorRect = {
+    .x = 0.0,
+    .y = 0.0,
+    .w = 4096.0,
+    .h = 4096.0,
+};
+SDL_Texture *floorTexture;
+
 Timer spawnTimer;
 
 int main() {
@@ -53,6 +62,9 @@ int main() {
     player.texture = LoadTexture("assets/Bob.png");
     enemyTexture = LoadTexture("assets/Dero.png");
     firebalTexture = LoadTexture("assets/Fireball.png");
+
+    floorTexture = LoadTexture("assets/floor-big.png");
+
     StartLoop(update, render);
 
     DeinitSDL();
@@ -106,21 +118,16 @@ void update(float dt, SDL_Window *window) {
         }
     }
 
-    for (int i = 0; i < enemiesCount; i++)
-    {
-        for (int j = 0; j < projectileCount; j++)
-        {
-            if (HasIntersectionF(&projectiles[j].shell, &enemies[i].shell))
-            {
+    for (int i = 0; i < enemiesCount; i++) {
+        for (int j = 0; j < projectileCount; j++) {
+            if (HasIntersectionF(&projectiles[j].shell, &enemies[i].shell)) {
                 deleteEnemy(enemies, enemiesCount, i);
                 enemiesCount--;
                 deleteProjectile(projectiles, projectileCount, j);
                 projectileCount--;
             }
-            
         }
     }
-    
 
     for (int i = 0; i < enemiesCount; i++) {
         if (HasIntersectionF(&player.shell, &enemies[i].shell)) {
@@ -133,6 +140,9 @@ void update(float dt, SDL_Window *window) {
     if (player.hp <= 0) {
         ExitGame();
     }
+
+    floorRect.x = -screen.x;
+    floorRect.y = -screen.y;
 }
 
 void render(float dt, SDL_Renderer *renderer) {
@@ -146,6 +156,8 @@ void render(float dt, SDL_Renderer *renderer) {
     // Clearing the screen
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
     SDL_RenderClear(renderer);
+
+    SDL_RenderCopyF(renderer, floorTexture, NULL, &floorRect);
 
     // Rendering player
     drawRect.x = player.direction;
