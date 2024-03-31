@@ -30,9 +30,40 @@ Projectile spawnProjectileP(Player *player, ProjectileTypes type,
                 .y = player->coords.y,
             },
         .direction = normal,
-        .speed = 500,
         .texture = texture,
     };
+
+    switch (type)
+    {
+    case FIREBALL:
+        projectile.speed = 500;
+        break;
+    case ICEBLAST:
+        projectile.speed = 450;
+        break;
+    case MAGIC_KNIFE:
+        projectile.speed = 850;
+        break;
+    
+    default:
+        break;
+    }
+
+    switch (type)
+    {
+    case FIREBALL:
+        projectile.damage = 50;
+        break;
+    case ICEBLAST:
+        projectile.damage = 40;
+        break;
+    case MAGIC_KNIFE:
+        projectile.damage = 35;
+        break;
+    
+    default:
+        break;
+    }
 
     return projectile;
 }

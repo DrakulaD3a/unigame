@@ -30,11 +30,13 @@ Player player = {
 };
 Enemy enemies[MAX_ENEMIES];
 int enemiesCount = 0;
+int enemySpawnFreq = 5;
 SDL_Texture *enemyTexture;
 
 Projectile projectiles[MAX_PROJECTILES];
 int projectileCount = 0;
-SDL_Texture *firebalTexture;
+SDL_Texture *projectileTextures[4];
+ProjectileTypes equippedType = FIREBALL;
 
 Timer spawnTimer;
 
@@ -52,7 +54,10 @@ int main() {
     spawnTimer = timerCreate(5, true);
     player.texture = LoadTexture("assets/Bob.png");
     enemyTexture = LoadTexture("assets/Dero.png");
-    firebalTexture = LoadTexture("assets/Fireball.png");
+    projectileTextures[FIREBALL] = LoadTexture("assets/Fireball.png");
+    projectileTextures[ICEBLAST] = LoadTexture("assets/Iceblast.png");
+    projectileTextures[MAGIC_KNIFE] = LoadTexture("assets/Magic_knife.png");
+
     StartLoop(update, render);
 
     DeinitSDL();
@@ -74,15 +79,34 @@ void update(float dt, SDL_Window *window) {
         ExitGame();
     }
 
-    if (IsKeyDown(SDL_SCANCODE_SPACE)) {
-        if (projectileCount < MAX_PROJECTILES) {
-            projectiles[projectileCount] =
-                spawnProjectileP(&player, FIREBALL, firebalTexture, &screen);
-            projectileCount++;
+    if (IsKeyPressed(SDL_SCANCODE_TAB)) {
+        switch (equippedType) {
+        case FIREBALL:
+            equippedType = ICEBLAST;
+            break;
+        case ICEBLAST:
+            equippedType = MAGIC_KNIFE;
+            break;
+        case MAGIC_KNIFE:
+            equippedType = FIREBALL;
+            break;
+
+        default:
+            break;
         }
     }
 
-    if (timerHasEnded(&spawnTimer)) {
+    if (IsKeyPressed(SDL_SCANCODE_SPACE)) {
+        if (projectileCount < MAX_PROJECTILES) {
+            projectiles[projectileCount] =
+                spawnProjectileP(&player, equippedType,
+                                 projectileTextures[equippedType], &screen);
+            projectileCount++;
+        }
+    }
+    SDL_CreateTextureFromSurface
+
+        if (timerHasEnded(&spawnTimer)) {
         if (enemiesCount < MAX_ENEMIES) {
             enemies[enemiesCount] = spawnEnemy(&player, window, enemyTexture);
             enemiesCount++;
@@ -99,28 +123,35 @@ void update(float dt, SDL_Window *window) {
     }
 
     for (int i = 0; i < projectileCount; i++) {
-        if (projectiles[i].distanceTraveled > 500) {
+        if (projectiles[i].distanceTraveled > 500 &&
+            equippedType != MAGIC_KNIFE) {
 
+            deleteProjectile(projectiles, projectileCount, i);
+            projectileCount--;
+        } else if (projectiles[i].distanceTraveled > 850) {
             deleteProjectile(projectiles, projectileCount, i);
             projectileCount--;
         }
     }
 
-    for (int i = 0; i < enemiesCount; i++)
-    {
-        for (int j = 0; j < projectileCount; j++)
-        {
-            if (HasIntersectionF(&projectiles[j].shell, &enemies[i].shell))
-            {
-                deleteEnemy(enemies, enemiesCount, i);
-                enemiesCount--;
+    for (int i = 0; i < enemiesCount; i++) {
+        for (int j = 0; j < projectileCount; j++) {
+            if (HasIntersectionF(&projectiles[j].shell, &enemies[i].shell)) {
+                enemies[i].hp -= projectiles[i].damage;
+                if (equippedType == ICEBLAST) {
+                    enemies[i].speed = 100;
+                }
+
+                if (enemies[i].hp <= 0) {
+                    deleteEnemy(enemies, enemiesCount, i);
+                    enemiesCount--;
+                }
+
                 deleteProjectile(projectiles, projectileCount, j);
                 projectileCount--;
             }
-            
         }
     }
-    
 
     for (int i = 0; i < enemiesCount; i++) {
         if (HasIntersectionF(&player.shell, &enemies[i].shell)) {

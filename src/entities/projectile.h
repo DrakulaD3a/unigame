@@ -5,9 +5,9 @@
 #include <SDL2/SDL.h>
 
 typedef enum {
-    FIREBALL = 1,
-    ICEBLAST = 2,
-    MAGIC_KNIFE = 3,
+    FIREBALL = 0,
+    ICEBLAST = 1,
+    MAGIC_KNIFE = 2,
 } ProjectileTypes;
 
 typedef struct {
@@ -17,6 +17,7 @@ typedef struct {
     float distanceTraveled;
     float speed;
     bool reachedDest;
+    short damage;
 
     SDL_Texture *texture;
 } Projectile;
