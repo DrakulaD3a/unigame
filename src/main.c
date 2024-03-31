@@ -106,6 +106,22 @@ void update(float dt, SDL_Window *window) {
         }
     }
 
+    for (int i = 0; i < enemiesCount; i++)
+    {
+        for (int j = 0; j < projectileCount; j++)
+        {
+            if (HasIntersectionF(&projectiles[j].shell, &enemies[i].shell))
+            {
+                deleteEnemy(enemies, enemiesCount, i);
+                enemiesCount--;
+                deleteProjectile(projectiles, projectileCount, j);
+                projectileCount--;
+            }
+            
+        }
+    }
+    
+
     for (int i = 0; i < enemiesCount; i++) {
         if (HasIntersectionF(&player.shell, &enemies[i].shell)) {
             player.hp -= 5;
