@@ -121,17 +121,11 @@ void update(float dt, SDL_Window *window) {
             enemiesCount++;
         }
     }
-    for (int i = 0; i < enemiesCount; i++) {
-        moveEnemy(&enemies[i], &player, dt);
-        SetCoordsToSDL(enemies[i].coords, &screen, &enemies[i].shell);
-    }
 
     for (int i = 0; i < projectileCount; i++) {
         moveProjectile(&projectiles[i], dt);
         SetCoordsToSDL(projectiles[i].coords, &screen, &projectiles[i].shell);
-    }
 
-    for (int i = 0; i < projectileCount; i++) {
         if (projectiles[i].distanceTraveled > 500 &&
             equippedType != MAGIC_KNIFE) {
 
@@ -144,6 +138,9 @@ void update(float dt, SDL_Window *window) {
     }
 
     for (int i = 0; i < enemiesCount; i++) {
+        moveEnemy(&enemies[i], &player, dt);
+        SetCoordsToSDL(enemies[i].coords, &screen, &enemies[i].shell);
+
         for (int j = 0; j < projectileCount; j++) {
             if (HasIntersectionF(&projectiles[j].shell, &enemies[i].shell)) {
                 enemies[i].hp -= projectiles[i].damage;
@@ -159,9 +156,7 @@ void update(float dt, SDL_Window *window) {
                 projectileCount--;
             }
         }
-    }
 
-    for (int i = 0; i < enemiesCount; i++) {
         if (HasIntersectionF(&player.shell, &enemies[i].shell)) {
             player.hp -= 5;
             deleteEnemy(enemies, enemiesCount, i);
@@ -169,6 +164,7 @@ void update(float dt, SDL_Window *window) {
             break;
         }
     }
+
     if (player.hp <= 0) {
         ExitGame();
     }

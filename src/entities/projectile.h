@@ -17,7 +17,7 @@ typedef struct {
     float distanceTraveled;
     float speed;
     bool reachedDest;
-    short damage;
+    int damage;
 
     SDL_Texture *texture;
 } Projectile;
