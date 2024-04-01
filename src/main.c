@@ -41,8 +41,9 @@ ProjectileTypes equippedType = FIREBALL;
 SDL_FRect floorRect = {
     .x = 0.0,
     .y = 0.0,
-    .w = 4096.0,
-    .h = 4096.0,
+    .w = 4096.0 * 3.14,
+    .h = 4096.0 * 3.14,
+    // je to pi-covina XD
 };
 SDL_Texture *floorTexture;
 
