@@ -13,7 +13,7 @@
 #define SCREEN_HEIGHT 720
 
 // TODO: Make this depend on time
-#define MAX_ENEMIES 15
+#define MAX_ENEMIES 10
 
 #define MAX_PROJECTILES 1
 
@@ -129,18 +129,13 @@ void update(float dt, SDL_Window *window) {
         }
     }
 
-    if (timerHasEnded(&diffTimer))
-    {
+    if (timerHasEnded(&diffTimer)) {
         diffLevel++;
-        if (deroSpawnTime > 2)
-        {
+        if (deroSpawnTime > 2) {
             deroSpawnTime = 5 - diffLevel;
             spawnTimer = timerCreate(deroSpawnTime, true);
         }
-        
-        
     }
-    
 
     for (int i = 0; i < projectileCount; i++) {
         moveProjectile(&projectiles[i], dt);
@@ -163,7 +158,7 @@ void update(float dt, SDL_Window *window) {
 
         for (int j = 0; j < projectileCount; j++) {
             if (HasIntersectionF(&projectiles[j].shell, &enemies[i].shell)) {
-                enemies[i].hp -= projectiles[i].damage;
+                enemies[i].hp -= projectiles[j].damage;
                 if (equippedType == ICEBLAST) {
                     enemies[i].speed = 100;
                 }
