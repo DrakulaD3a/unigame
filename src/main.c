@@ -13,7 +13,7 @@
 #define SCREEN_HEIGHT 720
 
 // TODO: Make this depend on time
-#define MAX_ENEMIES 10
+#define MAX_ENEMIES 15
 
 #define MAX_PROJECTILES 1
 
@@ -47,6 +47,11 @@ SDL_FRect floorRect = {
 SDL_Texture *floorTexture;
 
 Timer spawnTimer;
+double deroSpawnTime = 5;
+Timer diffTimer;
+
+double gameTime;
+short diffLevel = 0;
 
 int main() {
     if (!InitSDL()) {
@@ -59,7 +64,8 @@ int main() {
 
     srand(time(NULL));
 
-    spawnTimer = timerCreate(5, true);
+    spawnTimer = timerCreate(deroSpawnTime, true);
+    diffTimer = timerCreate(15, true);
     player.texture = LoadTexture("assets/Bob.png");
     enemyTexture = LoadTexture("assets/Dero.png");
     projectileTextures[FIREBALL] = LoadTexture("assets/Fireball.png");
@@ -76,6 +82,7 @@ int main() {
 }
 
 void update(float dt, SDL_Window *window) {
+    gameTime = SDL_GetTicks() / 1000;
     int w, h;
     SDL_GetWindowSize(window, &w, &h);
     if (player.shell.x != w / 2. || player.shell.y != w / 2.) {
@@ -121,6 +128,19 @@ void update(float dt, SDL_Window *window) {
             enemiesCount++;
         }
     }
+
+    if (timerHasEnded(&diffTimer))
+    {
+        diffLevel++;
+        if (deroSpawnTime > 2)
+        {
+            deroSpawnTime = 5 - diffLevel;
+            spawnTimer = timerCreate(deroSpawnTime, true);
+        }
+        
+        
+    }
+    
 
     for (int i = 0; i < projectileCount; i++) {
         moveProjectile(&projectiles[i], dt);
