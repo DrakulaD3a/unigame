@@ -38,13 +38,6 @@ int projectileCount = 0;
 SDL_Texture *projectileTextures[4];
 ProjectileTypes equippedType = FIREBALL;
 
-SDL_FRect floorRect = {
-    .x = 0.0,
-    .y = 0.0,
-    .w = 4096.0 * 3.14,
-    .h = 4096.0 * 3.14,
-    // je to pi-covina XD
-};
 SDL_Texture *floorTexture;
 
 Timer spawnTimer;
@@ -73,7 +66,7 @@ int main() {
     projectileTextures[ICEBLAST] = LoadTexture("assets/Iceblast.png");
     projectileTextures[MAGIC_KNIFE] = LoadTexture("assets/Magic_knife.png");
 
-    floorTexture = LoadTexture("assets/floor-big.png");
+    floorTexture = LoadTexture("assets/floor.png");
 
     StartLoop(update, render);
 
@@ -184,24 +177,38 @@ void update(float dt, SDL_Window *window) {
     if (player.hp <= 0) {
         ExitGame();
     }
-
-    floorRect.x = -screen.x;
-    floorRect.y = -screen.y;
 }
 
 void render(float dt, SDL_Renderer *renderer) {
+    // Clearing the screen
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+    SDL_RenderClear(renderer);
+
+    // Floor
+    SDL_FRect floorRect = {
+        .x = 0,
+        .y = 0,
+        .w = 64 * 4,
+        .h = 64 * 4,
+    };
+    int h = SCREEN_WIDTH % (int)floorRect.w;
+    int v = SCREEN_HEIGHT % (int)floorRect.h;
+    float sx = fmodf(screen.x, (int)floorRect.w);
+    float sy = fmodf(screen.y, (int)floorRect.h);
+    for (int i = -1; i < h; i++) {
+        for (int j = -1; j < v; j++) {
+            floorRect.x = i * floorRect.w - sx;
+            floorRect.y = j * floorRect.h - sy;
+            SDL_RenderCopyF(renderer, floorTexture, NULL, &floorRect);
+        }
+    }
+
     SDL_Rect drawRect = {
         .x = 0,
         .y = 0,
         .w = 32,
         .h = 32,
     };
-
-    // Clearing the screen
-    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-    SDL_RenderClear(renderer);
-
-    SDL_RenderCopyF(renderer, floorTexture, NULL, &floorRect);
 
     // Rendering player
     drawRect.x = player.direction;
